@@ -1,4 +1,5 @@
-function dqdt = swingODE(t, q, walkerDim)
+function dqdt = rhs(t, q, walkerDim)
+
     M = walkerDim.M;
     m = walkerDim.m;
     I = walkerDim.I;
@@ -18,9 +19,10 @@ function dqdt = swingODE(t, q, walkerDim)
     b = [- c*l*m*sin(theta_2)*omega_2^2 - 2*c*l*m*omega_1*sin(theta_2)*omega_2 - c*g*m*sin(theta_1 - gamma + theta_2) - M*g*l*sin(gamma - theta_1) + c*g*m*sin(gamma - theta_1) - 2*g*l*m*sin(gamma - theta_1);
         -c*m*(g*sin(theta_1 - gamma + theta_2) - l*omega_1^2*sin(theta_2))];
 
-    dqdt(1:2,1) = q(3:4);
-    dqdt(3:4,1) = A \ b;
 
+    alpha = A \ b;
 
-end
-
+    dqdt = [q(2); double(alpha(1)); q(4); double(alpha(2))];
+    
+%     dqdt(1:2,1) = q(3:4);
+%     dqdt(3:4,1) = A \ b;

@@ -1,35 +1,35 @@
-function [] = animation(t, y, walkerDim)
-    
+function animation(t_all, q_all, walkerDim)
     l = walkerDim.l;
 
-    figure;
-    axis([-2*l 2*l -2*l 2*l]);
-    hold on;
-    walkerPlot = plot(0, 0, 'ro', 'MarkerSize', 20, 'LineWidth', 2, 'DisplayName', 'Walker');
-    link1Plot = plot([0, 0], [0, 0], 'b', 'LineWidth', 2, 'DisplayName', 'Link 1');
-    link2Plot = plot([0, 0], [0, 0], 'g', 'LineWidth', 2, 'DisplayName', 'Link 2');
-    xlabel('X');
-    ylabel('Y');
-    title('Compass Gait Walker Animation');
-    legend;
-    grid on;
+    tstart = t_all(1);
+    tend = t_all(end);
+    tinterp = linspace(tstart,tend,walkerDim.movieFPS*(tend-tstart));
+    [~,n] = size(q_all);
+    for i=1:n
+        qinterp(:,i) = interp1(t_all,q_all(:,i),tinterp);
+    end
 
-    for i = 1:length(t)
-        theta1 = y(i, 1);
-        theta2 = y(i, 3);
-        x_walker = l*sin(theta1);
-        y_walker = -l*cos(theta1);
-        x_link1 = [0, l*sin(theta1)];
-        y_link1 = [0, -l*cos(theta1)];
-        x_link2 = [l*sin(theta1), l*sin(theta1) + l*sin(theta1 + theta2)];
-        y_link2 = [-l*cos(theta1), -l*cos(theta1) - l*cos(theta1 + theta2)];
+    theta1 = qinterp(:,1);
+    theta2 = qinterp(:,3);
+    xh = qinterp(:,5);
+    yh = qinterp(:,6);
 
-        set(walkerPlot, 'XData', x_walker, 'YData', y_walker);
-        set(link1Plot, 'XData', x_link1, 'YData', y_link1);
-        set(link2Plot, 'XData', x_link2, 'YData', y_link2);
+    line([-2, 2], [0,0],'Linewidth', 1, 'color', 'k'); hold on
+    for i = 1:length(tinterp) 
+        x_C1 = xh(i,1) + l*sin(theta1(i,1));
+        y_C1 = yh(i,1) - l*cos(theta1(i,1));
+        x_C2 = xh(i,1) + l*sin(theta1(i,1) + theta2(i,1));
+        y_C2 = yh(i,1) - l*cos(theta1(i,1) + theta2(i,1));
+        h0 = plot(xh(i,1),yh(i,1),'ko',"MarkerFaceColor","k", 'MarkerSize',10);
+        h1 = line([xh(i,1) x_C1],[yh(i,1), y_C1],'color', 'r', 'Linewidth', 2);
+        h2 = line([xh(i,1) x_C2],[yh(i,1), y_C2],'color', 'b', 'Linewidth', 2);
 
-        drawnow;
-        %pause(0.01);
+        axis([-2 2 -2 2]);
+        pause(0.01);
+        if (i<length(tinterp))
+            delete(h0)
+            delete(h1)
+            delete(h2)
+        end
     end
 end
-
