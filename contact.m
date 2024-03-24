@@ -4,7 +4,6 @@ function [gstop, isterminal, direction] = contact(t,q,walkerDim)
     theta2 = q(3);
 
     gstop = theta2 + 2*theta1;
-    %[gstop, theta1]
     if (theta1 > -0.1)
         isterminal = 0;
     else

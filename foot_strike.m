@@ -11,15 +11,8 @@ function qplus = foot_strike(qminus, walkerDim)
     l = walkerDim.l;
     c = walkerDim.c;
 
-    J11 = 1;
-    J12 = 0;
-    J13 = l*(cos(theta1_n + theta2_n) - cos(theta1_n));
-    J14 = l*cos(theta1_n + theta2_n);
-    J21 = 0;
-    J22 = 1;
-    J23 = l*(sin(theta1_n + theta2_n) - sin(theta1_n));
-    J24 = l*sin(theta1_n + theta2_n);
-    J = [J11 J12 J13 J14; J21 J22 J23 J24];
+    J = [1, 0, l*(cos(theta1_n + theta2_n) - cos(theta1_n)), l*cos(theta1_n + theta2_n);
+        0, 1, l*(sin(theta1_n + theta2_n) - sin(theta1_n)), l*sin(theta1_n + theta2_n)];
      
     A11 = M + 2*m;
     A12 = 0;

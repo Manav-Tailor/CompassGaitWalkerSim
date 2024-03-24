@@ -5,8 +5,11 @@ function animation(t_all, q_all, walkerDim)
     tend = t_all(end);
     tinterp = linspace(tstart,tend,walkerDim.movieFPS*(tend-tstart));
     [~,n] = size(q_all);
+    qinterp = zeros(length(tinterp), n);
     for i=1:n
-        qinterp(:,i) = interp1(t_all,q_all(:,i),tinterp);
+        [t_unique, ~, ic] = unique(t_all);
+        q_unique = accumarray(ic, q_all(:,i), [], @mean);
+        qinterp(:,i) = interp1(t_unique, q_unique, tinterp);
     end
 
     theta1 = qinterp(:,1);
