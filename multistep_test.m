@@ -1,10 +1,14 @@
-tic
 % Pre-run Cleanup
 clc
 clear
 close all
 format long
 
+currentFile = mfilename( 'fullpath' );
+[pathstr,~,~] = fileparts( currentFile );
+addpath( fullfile( pathstr, 'passive_CGW' ) );
+
+tic
 % Set Dimensions
 walkerDim.M = 1.0;          
 walkerDim.m = 0.5;
@@ -12,9 +16,9 @@ walkerDim.I = 0.02;
 walkerDim.l = 1.0;
 walkerDim.c = 0.5;
 walkerDim.g = 1.0;
-walkerDim.gamma = 0.007;
+walkerDim.gamma = 0.04;
 walkerDim.movieFPS = 60;
-walkerDim.steps = 10;
+walkerDim.steps = 3;
 
 % Set Initial State
 theta_1 = 0.19;
