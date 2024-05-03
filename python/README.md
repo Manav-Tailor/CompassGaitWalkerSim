@@ -1,1 +1,1 @@
-Both datasets are not uploaded due to there size, they can be generated indirectly using the other MATLAB files available in this repo.
+The first dataset is not uploaded due to its size. The second dataset is uploaded since it is significantly smaller. The first dataset can be generated indirectly using the other MATLAB files available in this repo.
